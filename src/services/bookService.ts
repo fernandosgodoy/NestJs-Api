@@ -1,6 +1,8 @@
+import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
 import Book from "src/model/book";
 
+@Injectable()
 export default class BookService {
 
     constructor(
