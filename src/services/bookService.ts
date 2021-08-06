@@ -1,27 +1,34 @@
+import { InjectModel } from "@nestjs/sequelize";
 import Book from "src/model/book";
 
 export default class BookService {
 
-    private books: Book[] = [];    
+    constructor(
+        @InjectModel(Book)
+        private bookModel: typeof Book 
+    ) {}
 
-    getAll() {
-        return this.books;
+    async getAll(): Promise<Book[]> {
+        return this.bookModel.findAll();
     }
 
-    getById(id: number) {
-        return this.books[0];
+    async getById(id: number): Promise<Book> {
+        return this.bookModel.findByPk(id);
     }
 
-    add(book: Book) {
-        this.books.push(book);
+    async add(book: Book) {
+        this.bookModel.create(book);
     }
 
-    update(book: Book) {
-        return book;
+    async update(book: Book): Promise<[number, Book[]]> {
+        return this.bookModel.update(book, {
+            where: { id: book.id }
+        });
     }
 
-    delete(id: number) {
-        this.books.pop();
+    async delete(id: number) {
+        const book: Book = await this.getById(id);
+        book.destroy;
     }
 
 }
