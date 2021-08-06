@@ -9,28 +9,28 @@ export default class BookController {
     }
 
     @Get()
-    public ListAll(): Book[] {
-        return this.bookService.getAll();
+    async ListAll(): Promise<Book[]> {
+        return await this.bookService.getAll();
     }
 
     @Get(':id')
-    public GetSingle(@Param() params): Book {
-        return this.bookService.getById(params.id);
+    async GetSingle(@Param() params): Promise<Book> {
+        return await this.bookService.getById(params.id);
     }
     
     @Post()
-    public Create(book: Book) {
+    async Create(book: Book) {
         this.bookService.add(book);
     }
 
     @Put()
-    public Update(book: Book) {
-        this.bookService.update(book);
+    async Update(book: Book): Promise<[number, Book[]]>  {
+        return await this.bookService.update(book);
     }
 
     @Delete(':id')
-    public Remove(@Param() params) {
-        this.bookService.delete(params.id);
+    async Remove(@Param() params) {
+        await this.bookService.delete(params.id);
     }
 
 }
